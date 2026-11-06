@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#06111d">
+<title>物理实验室 · 大学物理下互动动画</title>
+<style>
+:root{color-scheme:dark;--bg:#06111d;--panel:#0f2236;--line:rgba(160,214,232,.14);--text:#e9f6fa;--muted:#a3bfce;--aqua:#5fe3d6;--amber:#ffcf8c;--coral:#ff9a8a;--blue:#8fb8ff}
+*{box-sizing:border-box}
+body{margin:0;color:var(--text);background:radial-gradient(ellipse 60% 30% at 82% -8%,rgba(41,150,170,.18),transparent),radial-gradient(ellipse 46% 26% at 2% 44%,rgba(120,100,175,.08),transparent),var(--bg);font:14px/1.65 "Microsoft YaHei UI","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif}
+a{color:inherit;text-decoration:none}
+.wrap{width:min(1120px,calc(100% - 52px));margin:auto}
+header{border-bottom:1px solid var(--line);background:rgba(5,14,24,.7)}
+.top{min-height:66px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.brand{display:flex;align-items:center;gap:11px;font-weight:850;letter-spacing:.02em}
+.logo{width:34px;height:34px;border:1px solid rgba(118,239,230,.34);border-radius:10px;background:linear-gradient(145deg,#1d5b62,#183347);display:grid;place-items:center;color:#a1f9ed;font-size:18px;box-shadow:0 0 22px rgba(69,213,195,.14)}
+.course{border:1px solid rgba(136,221,219,.23);border-radius:7px;padding:6px 9px;font-size:10px;color:#aededa}
+.hero{padding:52px 0 30px}
+.eyebrow{font-size:10px;font-weight:850;color:#7be8df;letter-spacing:.18em}
+.hero h1{font-size:clamp(30px,4vw,50px);line-height:1.2;letter-spacing:-.05em;margin:10px 0 14px}
+.hero h1 em{font-style:normal;background:linear-gradient(90deg,#6ce8df,#a8c7ff,#ffc98f);color:transparent;background-clip:text}
+.hero p{color:#b5ccda;font-size:13px;line-height:1.9;max-width:760px;margin:0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding-bottom:42px}
+.card{position:relative;display:block;border:1px solid var(--line);border-radius:16px;background:linear-gradient(150deg,#12283e,#0c1d2f);padding:22px 23px 18px;box-shadow:0 20px 55px rgba(0,0,0,.22);transition:transform .18s,border-color .18s,box-shadow .18s;overflow:hidden}
+.card:hover{transform:translateY(-4px);border-color:rgba(121,224,214,.5);box-shadow:0 26px 70px rgba(0,0,0,.34)}
+.card:before{content:"";position:absolute;inset:0 0 auto;height:130px;background:radial-gradient(ellipse at 20% 0,var(--glow),transparent 70%);opacity:.75;pointer-events:none}
+.no{font:800 11px/1 ui-monospace,Consolas,monospace;color:#8fe9dc;letter-spacing:.14em}
+.card h2{font-size:21px;letter-spacing:-.03em;margin:9px 0 5px;display:flex;align-items:center;gap:9px}
+.card h2 i{font-style:normal;font-size:16px;color:var(--accent)}
+.card .lead{color:#b9d0dc;font-size:12px;margin:0 0 13px;line-height:1.8}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 16px;padding:0;list-style:none}
+.tags li{border:1px solid rgba(170,214,228,.14);background:rgba(30,58,78,.45);border-radius:6px;padding:3px 7px;font-size:10px;color:#b9d3de}
+.go{display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(178,215,234,.1);padding-top:12px;font-size:11.5px;color:#d9f4ef}
+.go b{font-weight:750;color:var(--accent);letter-spacing:.02em}
+.go span{transition:transform .18s}
+.card:hover .go span{transform:translateX(4px)}
+.note{border:1px solid rgba(255,207,140,.2);border-radius:13px;background:rgba(66,52,40,.26);padding:14px 18px;color:#ecd9c1;font-size:11.5px;line-height:1.9;margin-bottom:40px}
+.note b{color:#ffe2b3}
+footer{border-top:1px solid var(--line);padding:20px 0 34px;color:#8fa9b9;font-size:10.5px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+@media(max-width:760px){.wrap{width:calc(100% - 30px)}.grid{grid-template-columns:1fr}.hero{padding:36px 0 24px}.card h2{font-size:19px}}
+@media(max-width:430px){.course{display:none}.hero h1{font-size:29px}}
+</style>
+</head>
+<body>
+<header><div class="wrap top"><div class="brand"><span class="logo" aria-hidden="true">◎</span><span>物理实验室</span></div><span class="course">大学物理下 · 互动动画 · 四站</span></div></header>
+<main class="wrap">
+<section class="hero">
+  <span class="eyebrow">可触摸的大学物理 · 机械振动与波 · 光学 · 量子</span>
+  <h1>把课本里<em>看不见的过程</em>，<br>放慢到能用手拨动。</h1>
+  <p>四间独立的小实验室，对应本学期最常考的四个模块。每一间都是一个单独的 HTML 文件：打开就能跑，不用安装、不用联网，手机上也一样。</p>
+</section>
+
+<div class="grid">
+  <a class="card" href="01-optics.html" style="--accent:#6ce8df;--glow:rgba(60,190,190,.16)">
+    <span class="no">EXPERIMENT 01</span>
+    <h2><i>◍</i>光的条纹实验室</h2>
+    <p class="lead">单缝、双缝、光栅到牛顿环、空气劈尖、薄膜等倾、迈克尔逊——同一套波动，换个装置就换一种条纹。</p>
+    <ul class="tags"><li>双缝间距</li><li>牛顿环</li><li>等厚/等倾</li><li>迈克尔逊</li><li>光栅缺级</li></ul>
+    <div class="go"><b>打开实验</b><span>→</span></div>
+  </a>
+
+  <a class="card" href="02-photoelectric.html" style="--accent:#ffcf8c;--glow:rgba(210,150,70,.16)">
+    <span class="no">EXPERIMENT 02</span>
+    <h2><i>✦</i>光电效应实验室</h2>
+    <p class="lead">调波长、换金属、加反向电压：看光电子一颗颗飞出来，亲眼看“光强再大也打不出电子”的红限。</p>
+    <ul class="tags"><li>遏止电压</li><li>红限频率</li><li>饱和电流</li><li>I–V 曲线</li><li>四种金属</li></ul>
+    <div class="go"><b>打开实验</b><span>→</span></div>
+  </a>
+
+  <a class="card" href="03-standing.html" style="--accent:#8fb8ff;--glow:rgba(90,130,220,.16)">
+    <span class="no">EXPERIMENT 03</span>
+    <h2><i>≋</i>驻波实验室</h2>
+    <p class="lead">两列行波反向叠加，绳子“停”在原地跳舞。点一下弦上的探针，就知道它是波节还是波腹。</p>
+    <ul class="tags"><li>两端固定</li><li>一端自由</li><li>闭口声管</li><li>固有频率</li><li>共振曲线</li></ul>
+    <div class="go"><b>打开实验</b><span>→</span></div>
+  </a>
+
+  <a class="card" href="04-doppler.html" style="--accent:#ff9a8a;--glow:rgba(220,110,90,.15)">
+    <span class="no">EXPERIMENT 04</span>
+    <h2><i>◎</i>多普勒效应实验室</h2>
+    <p class="lead">救护车追着自己的波阵面跑：车头挤密、车尾拉开，听者头顶的频率与轨迹一起画出那级“掉下来”的台阶。</p>
+    <ul class="tags"><li>靠近/远离</li><li>观察者运动</li><li>双向</li><li>马赫锥</li><li>试听音调</li></ul>
+    <div class="go"><b>打开实验</b><span>→</span></div>
+  </a>
+</div>
+
+<div class="note"><b>怎么用：</b>点开任意一间，先看动画，再拖右侧滑块改条件；每间都带“公式解剖”和“考点变式”，可以先心算、再点选项对答案。所有页面均为单文件、离线运行，转发 HTML 文件本身也能直接打开。</div>
+</main>
+<footer class="wrap"><span>大学物理下 · 机械振动与机械波 · 波动光学 · 量子物理基础</span><span>动画按比例放慢；数值按实时参数计算。</span></footer>
+</body>
+</html>

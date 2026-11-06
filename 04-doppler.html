@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#06111d">
+<title>多普勒效应实验室｜追着声波跑</title>
+<style>
+:root{color-scheme:dark;--bg:#06111d;--panel:#0f2236;--line:rgba(160,214,232,.13);--text:#e9f6fa;--muted:#a3bfce;--aqua:#5fe3d6;--amber:#ffcf8c;--coral:#ff9a8a;--blue:#7db9f0}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--text);background:radial-gradient(ellipse 62% 26% at 78% -6%,rgba(41,150,170,.16),transparent),radial-gradient(ellipse 48% 24% at 4% 34%,rgba(120,100,175,.07),transparent),var(--bg);font:14px/1.6 "Microsoft YaHei UI","PingFang SC","Noto Sans CJK SC",system-ui,sans-serif}
+button,input{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(--aqua);outline-offset:3px}
+.wrap{width:min(1390px,calc(100% - 64px));margin:auto}
+.top{border-bottom:1px solid var(--line);background:rgba(5,14,24,.72)}
+.topin{min-height:67px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:11px;font-weight:850;letter-spacing:.025em}
+.brand-logo{width:36px;height:36px;border:1px solid rgba(118,239,230,.34);border-radius:11px;background:linear-gradient(145deg,#1d5b62,#183347);display:grid;place-items:center;color:#a1f9ed;font-size:20px;box-shadow:0 0 24px rgba(69,213,195,.13)}
+.nav{display:flex;gap:24px;font-size:11px;color:#afc6d5}.nav a:hover{color:#a6f6ed}
+.course{border-radius:7px;border:1px solid rgba(136,221,219,.23);padding:6px 9px;font-size:10px;color:#aededa}
+.hero{display:flex;justify-content:space-between;align-items:end;gap:25px;padding:44px 0 30px}
+.eyebrow{font-size:10px;font-weight:850;color:#7be8df;letter-spacing:.18em}
+.hero h1{font-size:clamp(33px,3.55vw,55px);line-height:1.17;letter-spacing:-.055em;margin:9px 0 15px}
+.hero h1 em{font-style:normal;background:linear-gradient(90deg,#6ce8df,#a8c7ff,#ffc98f);color:transparent;background-clip:text}
+.hero p{color:#b5ccda;font-size:13px;line-height:1.9;max-width:770px;margin:0}
+.hero-aside{border:1px solid rgba(255,207,140,.2);border-radius:14px;background:rgba(66,52,40,.28);padding:13px 17px;min-width:246px;color:#e8d6be;font-size:11px;line-height:1.85}
+.hero-aside b{color:#ffe2b3}.hero-aside span{display:block}
+.quick{display:flex;flex-wrap:wrap;gap:9px;margin:0 0 21px}
+.quick span{border:1px solid rgba(169,214,228,.13);background:#102539;border-radius:8px;color:#b8cdd8;padding:7px 11px;font-size:11px}
+.quick b{color:var(--aqua);margin-right:5px}
+.card{border-radius:16px;border:1px solid var(--line);background:linear-gradient(148deg,#12283e,#0d1e31);box-shadow:0 22px 65px rgba(0,0,0,.24);overflow:hidden}
+.card-head{padding:16px 19px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.card-head h2{margin:0;font-size:14px;display:flex;align-items:center;gap:9px}
+.card-head h2:before{content:"";width:8px;height:8px;background:var(--aqua);border-radius:50%;box-shadow:0 0 13px var(--aqua)}
+.card-head small{font-size:10px;color:#87a4b9}
+.experiment{display:grid;grid-template-columns:minmax(0,1.66fr) minmax(300px,.78fr);gap:18px;align-items:start}
+.mainstage{min-width:0;display:grid;gap:15px}
+.canvas-wrap{background:#081827;position:relative}
+.canvas-wrap canvas{display:block;width:100%;height:474px;touch-action:none}
+.canvas-badge{position:absolute;top:13px;left:15px;border:1px solid rgba(150,224,224,.18);border-radius:7px;background:rgba(5,17,28,.78);padding:6px 9px;color:#c5e8e4;font-size:10px;pointer-events:none}
+.canvas-badge.right{left:auto;right:15px}
+.player{border-top:1px solid var(--line);background:#0f2739;padding:11px 15px;display:flex;align-items:center;justify-content:space-between;gap:11px;flex-wrap:wrap}
+.player-actions{display:flex;gap:6px;flex-wrap:wrap}
+.mini-btn{border:1px solid rgba(164,217,230,.19);border-radius:8px;background:#224158;color:#e6f4fa;padding:7px 10px;font-size:11px}
+.mini-btn:hover,.mini-btn[aria-pressed=true]{border-color:#72e4db;background:#28626b}
+.mini-btn.primary{background:#2a8987;border-color:#6ce2da}
+.player-tip{font-size:10px;color:#9fbfcf}
+.metrics{display:grid;grid-template-columns:1.15fr 1fr 1fr 1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.metric{background:#0e2135;padding:13px 14px;min-width:0}
+.metric span{display:block;font-size:10px;color:#9eb9c9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.metric strong{display:block;color:#d7fcf5;font-variant-numeric:tabular-nums;font-size:17px;margin-top:4px;white-space:nowrap}
+.metric:nth-child(1) strong{color:#fff3d8}.metric:nth-child(2) strong{color:#8ff0df}.metric:nth-child(3) strong{color:#a9c6ff}.metric:nth-child(4) strong{color:#ffc39a}.metric:nth-child(5) strong{color:#ffd2c4}
+.trace-card{border:1px solid var(--line);border-radius:14px;background:#0a1c2c;overflow:hidden}
+.trace-head{padding:9px 14px;display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line);font-size:10px;color:#9bb8c9;letter-spacing:.06em}
+.trace-head b{color:#e7f6f8;font-size:11px;letter-spacing:0}
+.trace-card canvas{display:block;width:100%;height:100px}
+.side{display:grid;gap:15px}
+.side-head{padding:14px 17px 0;font-weight:750;font-size:12px}
+.control-list{padding:4px 18px 13px}
+.control{padding:10px 0 12px;border-top:1px solid rgba(178,215,234,.1)}
+.control:first-child{border-top:0}
+.control-line{display:flex;justify-content:space-between;gap:10px;font-size:11px;color:#e5f5fa}
+.control-line span small{display:block;color:#8fa9b9;font-size:9.5px;margin-top:1px}
+.control-line output{font-weight:800;color:#adf3e8;white-space:nowrap;font-variant-numeric:tabular-nums}
+.control input[type=range]{width:100%;height:18px;margin:9px 0 0;appearance:none;-webkit-appearance:none;background:none;cursor:pointer}
+.control input[type=range]::-webkit-slider-runnable-track{height:5px;border-radius:10px;background:linear-gradient(90deg,#5cd5c9 var(--pct,45%),#365066 var(--pct,45%))}
+.control input[type=range]::-moz-range-track{height:5px;border-radius:10px;background:#365066}
+.control input[type=range]::-moz-range-progress{height:5px;background:#5cd5c9}
+.control input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:17px;height:17px;border-radius:50%;border:3px solid #d7fffb;background:#359a9c;margin-top:-6px;box-shadow:0 0 0 4px rgba(101,223,213,.16)}
+.control input[type=range]::-moz-range-thumb{width:12px;height:12px;border:3px solid #d7fffb;background:#359a9c}
+.ends{display:flex;justify-content:space-between;font-size:10px;color:#7593a7;margin-top:-2px}
+.status{margin:0 18px 17px;border:1px solid rgba(255,207,140,.2);border-radius:10px;background:rgba(74,57,39,.28);padding:10px 12px;font-size:11px;color:#f0dcc0;line-height:1.7}
+.status b{color:#ffe6ba}
+.tiny-note{padding:14px 17px;font-size:10.5px;color:#9db9c9;line-height:1.8}
+.tiny-note b{color:#d6f2ee}
+.section-title{margin:42px 0 16px}
+.section-title h2{font-size:clamp(23px,2.35vw,33px);letter-spacing:-.045em;margin:7px 0 6px}
+.section-title h2 em{font-style:normal;color:#9befe4}
+.section-title p{color:#a4becd;font-size:12px;margin:0;line-height:1.8}
+.formula-grid{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(290px,.88fr);gap:17px}
+.eq-card{padding:19px 21px}
+.eq-line{font:16px/1.5 Georgia,"Times New Roman",serif;color:#e9fdf6;border:1px solid rgba(125,225,209,.18);border-radius:10px;background:rgba(52,133,130,.13);padding:11px 13px;margin:10px 0 12px}
+.eq-line i{font-style:normal;color:#ffcf8c}
+.eq-line sub{font-size:10px}
+.subst{font:12.5px/1.95 "Cascadia Mono",Consolas,monospace;color:#b8d5df;background:#0a1d2d;border:1px solid rgba(150,205,225,.12);border-radius:10px;padding:11px 13px}
+.subst b{color:#98f3e1}.subst .warn{color:#ffb6a6}
+.eq-note{margin:10px 0 0;font-size:10.5px;color:#95b2c3;line-height:1.75}
+.sign-card{padding:17px 19px}
+.sign-card h3{margin:2px 0 10px;font-size:14px}
+table.sign{width:100%;border-collapse:collapse;font-size:11px}
+table.sign th{text-align:left;color:#8fb0c2;font-weight:600;padding:7px 8px;border-bottom:1px solid var(--line);font-size:10px}
+table.sign td{padding:8px;border-bottom:1px solid rgba(160,214,232,.08);color:#cfe2eb}
+table.sign td:nth-child(2){color:#ffe0b0;font-family:"Cascadia Mono",Consolas,monospace;font-size:10.5px}
+table.sign tr:last-child td{border-bottom:0}
+.mnemonic{margin-top:10px;border-left:3px solid #6ce2da;background:rgba(43,117,113,.16);padding:8px 11px;font-size:11px;color:#c9f4ea;border-radius:0 8px 8px 0}
+.note-strip{margin-top:16px;border:1px dashed rgba(160,214,232,.18);border-radius:12px;padding:12px 16px;font-size:11px;color:#a9c4d2;line-height:1.85}
+.note-strip b{color:#9dece1}
+.cases{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;margin-bottom:15px}
+.case{border:1px solid rgba(163,215,223,.16);background:#152d43;border-radius:11px;color:#e8f5f8;padding:12px;text-align:left;min-height:104px;transition:.17s}
+.case:hover{transform:translateY(-3px);border-color:#79d8ce}
+.case[aria-pressed=true]{background:#235a5e;border-color:#79e0d1}
+.case small{color:#8fead8;font-size:10px;font-weight:800}
+.case strong{display:block;margin:6px 0 4px;font-size:13px}
+.case span{display:block;font-size:10px;line-height:1.45;color:#acc8d5}
+.quiz-grid{display:grid;grid-template-columns:minmax(0,1.22fr) minmax(270px,.78fr);gap:16px}
+.quiz-main,.solution-card{padding:19px 21px}
+.quiz-main h3{font-size:16.5px;margin:8px 0 13px;line-height:1.65}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.quiz-guide{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.quiz-guide div{border:1px dashed rgba(150,220,220,.2);border-radius:9px;padding:10px 11px;display:flex;gap:9px;align-items:flex-start;background:rgba(20,48,66,.33)}
+.quiz-guide b{font:800 10px/1.5 ui-monospace,Consolas,monospace;color:#7fe7db;background:rgba(95,227,214,.13);border-radius:5px;padding:1px 5px;flex:none}
+.quiz-guide span{font-size:11px;color:#e2f3f7;line-height:1.55}
+.quiz-guide small{display:block;color:#93b1c2;font-size:10px;margin-top:2px}
+.choices button{padding:10px;border-radius:8px;border:1px solid rgba(175,213,229,.18);background:#203c53;color:#e5f5f9;text-align:left;font-size:11px}
+.choices button:hover{border-color:#82e0d6}
+.choices button.correct{background:#2f6357;border-color:#80e5b5}
+.choices button.wrong{background:#674a53;border-color:#f5aaa3}
+.feedback{font-size:11px;color:#b1cad6;min-height:20px;margin:12px 0 0}
+.solution-card h3{font-size:15px;margin:4px 0 7px}
+.solution-card p{font-size:11px;line-height:1.83;color:#abc4d1;margin:0}
+.solution-card details{border-top:1px solid var(--line);padding-top:9px;margin-top:11px}
+.solution-card summary{font-size:11px;color:#92e8d7;cursor:pointer}
+.solution-card details p{margin-top:8px}
+.howto{margin:26px 0 46px;padding:19px 22px;display:flex;gap:20px;justify-content:space-between;align-items:center}
+.howto h3{margin:0 0 5px;font-size:15px}
+.howto p{margin:0;color:#a9c3cf;font-size:11px;line-height:1.85;max-width:980px}
+.pill{border:1px solid rgba(119,222,211,.26);color:#aff0e2;border-radius:30px;padding:8px 12px;font-size:10px;white-space:nowrap}
+footer{border-top:1px solid var(--line);padding:20px 0 28px;display:flex;justify-content:space-between;gap:20px;color:#7998a9;font-size:10px;flex-wrap:wrap}
+@media(max-width:1100px){.wrap{width:min(100% - 38px,1390px)}.experiment{grid-template-columns:minmax(0,1.42fr) minmax(280px,.84fr)}.canvas-wrap canvas{height:430px}.cases{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:780px){.experiment,.formula-grid,.quiz-grid{grid-template-columns:1fr}.canvas-wrap canvas{height:380px}.metrics{grid-template-columns:repeat(3,1fr)}.cases{grid-template-columns:repeat(3,1fr)}.hero-aside{display:none}.hero h1{font-size:34px}}
+@media(max-width:530px){.wrap{width:calc(100% - 26px)}.topin{min-height:57px}.brand{font-size:12px;white-space:nowrap}.brand-logo{width:30px;height:30px}.course{display:none}.nav{gap:10px;font-size:10px}.nav a{white-space:nowrap}.hero{padding:31px 0 25px}.hero h1{font-size:31px}.hero p{font-size:12px}.quick{gap:6px}.quick span{font-size:10px;padding:6px 8px}.card-head{padding:13px}.card-head small{display:none}.canvas-wrap canvas{height:330px}.canvas-badge{font-size:9px;top:8px;left:8px}.canvas-badge.right{right:8px}.player{padding:10px}.player-tip{display:none}.metrics{grid-template-columns:repeat(2,1fr)}.metric{padding:10px}.metric strong{font-size:14px}.metrics .metric:last-child{grid-column:1/-1}.cases{grid-template-columns:repeat(2,1fr)}.choices{grid-template-columns:1fr}.quiz-guide{grid-template-columns:1fr}.howto{display:block}.pill{display:inline-block;margin-top:10px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap topin"><div class="brand"><span class="brand-logo" aria-hidden="true">◎</span><span>追声实验室</span></div><nav class="nav" aria-label="页面导航"><a href="#lab">驶过实验</a><a href="#formula">公式解剖</a><a href="#quiz">考点变式</a></nav><span class="course">大学物理 · §11-7 多普勒效应</span></div></header>
+<main class="wrap">
+<section class="hero"><div><span class="eyebrow">可触摸的大学物理 · 声波与多普勒效应</span><h1>救护车驶过，<br><em>为什么音调会“掉”下来？</em></h1><p>司机根本没有改变鸣笛频率，你听到的却先高后低。让声源真的追着自己的波阵面跑起来：看车头前的波阵面挤在一起、车尾后的被拉开，再回到公式，把“靠近”和“远离”的符号一次理顺。</p></div><aside class="hero-aside"><span><b>靠近：</b>波阵面挤密 → 波长变短 → 音调升高</span><span><b>远离：</b>波阵面拉开 → 波长变长 → 音调降低</span></aside></section>
+<div class="quick"><span><b>01</b>让声源从身边驶过</span><span><b>02</b>盯住波阵面的疏密</span><span><b>03</b>对照公式与五个考点</span></div>
+<section id="lab" aria-label="多普勒效应互动实验台"><div class="experiment">
+<div class="mainstage">
+<div class="card"><div class="card-head"><h2>驶过实验台</h2><small>俯视示意 · 青色圆圈是同一时刻发出的声波阵面</small></div>
+<div class="canvas-wrap"><canvas id="scene" role="img" aria-label="声源从你身边驶过的俯视动画，青色圆圈表示声波阵面，前方疏密变化代表波长压缩或拉伸"></canvas><span class="canvas-badge">声源鸣笛频率固定</span><span class="canvas-badge right">慢动作示意 · 波速与车速比例真实</span></div>
+<div class="player"><div class="player-actions"><button type="button" class="mini-btn primary" id="play" aria-label="暂停动画">Ⅱ 暂停</button><button type="button" class="mini-btn" id="replay">↺ 重播驶过</button><button type="button" class="mini-btn" id="sound" aria-pressed="false">♪ 试听音调</button></div><span class="player-tip">拖动右侧速度，观察“驶过瞬间”的音调跳变</span></div></div>
+<div class="trace-card"><div class="trace-head"><span><b>音调轨迹</b> · 你实际听到的频率</span><span>虚线 = 鸣笛频率 f₀</span></div><canvas id="trace" role="img" aria-label="你听到的频率随时间变化的折线图，驶过瞬间会出现从高到低的跳变"></canvas></div>
+<div class="metrics"><div class="metric"><span>此刻听到</span><strong id="nowFreq">—</strong></div><div class="metric"><span>靠近时</span><strong id="appFreq">—</strong></div><div class="metric"><span>远离时</span><strong id="recFreq">—</strong></div><div class="metric"><span>前方波长</span><strong id="lamAhead">—</strong></div><div class="metric"><span>后方波长</span><strong id="lamBehind">—</strong></div></div>
+</div>
+<aside class="side">
+<div class="card"><div class="side-head">实验条件</div><div class="control-list">
+<div class="control"><label class="control-line" for="vs"><span>声源速度<small>向右行驶，会从你身边经过</small></span><output id="vsOut">90 m/s</output></label><input id="vs" type="range" min="0" max="700" step="5" value="90" aria-label="声源速度"><div class="ends"><span>0</span><span>700 m/s</span></div></div>
+<div class="control"><label class="control-line" for="vo"><span>观察者速度<small>你向左迎向声源</small></span><output id="voOut">0 m/s</output></label><input id="vo" type="range" min="0" max="100" step="2" value="0" aria-label="观察者速度"><div class="ends"><span>0</span><span>100 m/s</span></div></div>
+<div class="control"><label class="control-line" for="v"><span>介质声速 v</span><output id="vOut">340 m/s</output></label><input id="v" type="range" min="300" max="360" step="2" value="340" aria-label="声速"><div class="ends"><span>300</span><span>360 m/s</span></div></div>
+<div class="control"><label class="control-line" for="f0"><span>声源鸣笛频率 f₀</span><output id="f0Out">700 Hz</output></label><input id="f0" type="range" min="200" max="1200" step="10" value="700" aria-label="声源频率"><div class="ends"><span>200</span><span>1200 Hz</span></div></div>
+</div><div class="status" id="status" aria-live="polite">—</div></div>
+<div class="card tiny-note"><b>为什么圆圈会挤在一起？</b><br>声源每发出一圈波，就向前挪了一段。车头方向，后一圈离前一圈更近，波长被压短；车尾方向，圈与圈被拉开。波速相对介质不变，所以“每秒到达你耳朵的波数”变了，音调也就变了。</div>
+</aside></div></section>
+
+<section id="formula" aria-label="多普勒公式解剖"><div class="section-title"><span class="eyebrow">第二展区 · 把公式装回场景</span><h2>同一个鸣笛，<em>靠近与远离是两个答案。</em></h2><p>下面的数值会跟着你的滑块实时更新。先看图，再代入；符号记反时，回到“靠近时波被压密”这句话。</p></div>
+<div class="formula-grid">
+<div class="card eq-card"><span class="eyebrow" style="color:#ffcf8c">当前场景 · 实时代入</span><div class="eq-line">f′ = f₀ · (v + v<sub>o</sub>) / (v − v<sub>s</sub>)　<i>（靠近，上加下减）</i></div><div class="subst" id="subst"></div><p class="eq-note" id="eqNote"></p></div>
+<div class="card sign-card"><h3>四个方向，只记一句话</h3><table class="sign"><thead><tr><th>情形</th><th>取哪个符号</th><th>听到</th></tr></thead><tbody><tr><td>观察者靠近声源</td><td>分子 v + v<sub>o</sub></td><td>更高</td></tr><tr><td>观察者远离声源</td><td>分子 v − v<sub>o</sub></td><td>更低</td></tr><tr><td>声源靠近观察者</td><td>分母 v − v<sub>s</sub></td><td>更高</td></tr><tr><td>声源远离观察者</td><td>分母 v + v<sub>s</sub></td><td>更低</td></tr></tbody></table><div class="mnemonic">靠近“上加下减”，远离“上减下加”。分子管观察者，分母管声源。</div></div>
+</div>
+<div class="note-strip"><b>别踩这两个坑：</b>风把介质整体吹动时，声速相对地面会变，但只要声源和观察者都随介质静止，接收频率并不改变；光的多普勒不需要介质，远离时谱线向红端移动（红移），靠近时向蓝端移动（蓝移）。<br><b>冲击波：</b>当声源速度追上声速，波阵面在车头前叠成一个锥面，锥半角满足 sin θ = v / v<sub>s</sub>；此时“前方频率”已没有意义，能到达你的是冲击波。<br><b>它在哪里用：</b>交警测速雷达、医学彩超的血流测速、星系光谱红移，用的都是同一个“靠近升高、远离降低”的公式。</div>
+</section>
+
+<section id="quiz" aria-label="多普勒效应考点变式"><div class="section-title"><span class="eyebrow">第三展区 · 考点变式实验</span><h2>换个运动方式，<em>你还能算对吗？</em></h2><p>挑一个情境，实验条件会自动切换；先心算，再选答案，最后对照上面的波阵面与数值。</p></div>
+<div class="cases" id="cases" role="group" aria-label="选择多普勒考题"></div>
+<div class="quiz-grid"><div class="card quiz-main"><span class="eyebrow" style="color:#8fe9dc">先预测，再用实验验证</span><h3 id="question">先在上面选一个情境，实验参数会自动切换。</h3><div class="choices quiz-guide" id="choices"><div><b>01</b><span>挑一个情境<small>参数自动切换</small></span></div><div><b>02</b><span>先心算 f′<small>看谁在动，近加远减</small></span></div><div><b>03</b><span>点选项验证<small>再回看波阵面与轨迹</small></span></div></div><p class="feedback" id="feedback" aria-live="polite">点选一个情境，开始计算。</p></div>
+<div class="card solution-card"><h3 id="caseTitle">看清谁在动</h3><p id="caseIntro">五个情境分别对应：声源靠近、声源远离、观察者运动、双向运动和冲击波。</p><details><summary>展开完整解题思路</summary><p id="caseSolution">点选情境后，这里会给出对应的解题思路。</p></details></div></div>
+</section>
+
+<section class="card howto"><div><h3>使用方法 · 不用安装</h3><p>打开本文件即可离线使用。① 在右侧拖动“声源速度”和“观察者速度”，点“重播驶过”，让声源从你身边经过；② 盯住青色圆圈：车头前挤密、车尾后被拉开，听者头顶实时显示你听到的频率；③ 看“音调轨迹”，找到驶过瞬间的跳变；④ 在第二展区对照公式与当前数值；⑤ 在第三展区点选五个考点，先预测再看解答。“试听音调”需要点击后才会出声，默认静音。</p></div><span class="pill">独立单文件 · 可离线打开</span></section>
+</main>
+<footer class="wrap"><span>大学物理下 · §11-7 多普勒效应与冲击波 · 拓展 §11-9 电磁波的多普勒效应</span><span>动画按比例放慢或加快；频率按瞬时相对速度计算。</span></footer>
+<script>
+(()=>{'use strict';
+const $=id=>document.getElementById(id);
+const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+const state={v:340,f0:700,vs:90,vo:0,playing:true};
+const sim={t:0,srcX:0,obsX:0,obsX0:0,rings:[],trace:[],lastEmit:-9,passT:null,side:1,gapUntil:0};
+const scene=$('scene'),ctx=scene.getContext('2d'),traceC=$('trace'),tctx=traceC.getContext('2d');
+let w=0,h=0,tw=0,th=0,dpr=1,last=0,now=0,stars=[],L={l:0,r:0,y:0,rh:0},uiClock=0;
+let actx=null,osc=null,gainNode=null,audioOn=false,audioBusy=false;
+
+function layout(){L.l=Math.max(46,w*.07);L.r=w-42;L.y=h*.61;L.rh=Math.min(96,h*.19)}
+function simRate(){return clamp(.5/(state.vs/state.v+.25),.2,1.6)}
+function initSim(clearTrace){
+  layout();
+  const had=sim.t>0;
+  sim.srcX=L.l+22;sim.obsX0=L.l+(L.r-L.l)*.68;sim.obsX=sim.obsX0;
+  sim.rings=[];sim.lastEmit=sim.t;sim.passT=null;
+  sim.side=Math.sign(sim.obsX-sim.srcX)||1;
+  if(clearTrace){sim.trace=[];sim.gapUntil=0}
+  else if(had){sim.trace.push({t:sim.t,f:null});sim.gapUntil=sim.t+.3}
+}
+function heard(){
+  const n=Math.sign(sim.obsX-sim.srcX)||1;
+  const den=state.v-state.vs*n;
+  if(den<=0) return null;
+  return state.f0*(state.v+state.vo*n)/den;
+}
+function stats(){
+  const {v,f0,vs,vo}=state;
+  const app=vs<v?f0*(v+vo)/(v-vs):null;
+  const rec=f0*(v-vo)/(v+vs);
+  return {app,rec,lamA:vs<v?(v-vs)/f0:null,lamR:(v+vs)/f0,mach:vs/v,theta:vs>v?Math.asin(v/vs)*180/Math.PI:null};
+}
+const fmt=(x,d=0)=>x===null?'—':(d?x.toFixed(d):Math.round(x).toString());
+
+/* ---------- 画布工具 ---------- */
+function roundRect(c,x,y,ww,hh,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+ww,y,x+ww,y+hh,r);c.arcTo(x+ww,y+hh,x,y+hh,r);c.arcTo(x,y+hh,x,y,r);c.arcTo(x,y,x+ww,y,r);c.closePath()}
+function txt(c,s,x,y,col,size,align='left',weight='400'){c.save();c.font=`${weight} ${size}px "Microsoft YaHei UI","PingFang SC",sans-serif`;c.fillStyle=col;c.textAlign=align;c.textBaseline='middle';c.fillText(s,x,y);c.restore()}
+function makeStars(){stars=[];for(let i=0;i<72;i++)stars.push({x:Math.random()*w,y:Math.random()*h*.52,r:Math.random()*1.25+.35,a:Math.random()*.42+.12,p:Math.random()*6.28})}
+
+function skyline(c){
+  const base=L.y-L.rh/2-4;let x=-18,s=987654321;
+  const rnd=()=>{s=(s*16807)%2147483647;return s/2147483647};
+  c.save();
+  while(x<w+18){
+    const bw=16+rnd()*48,bh=12+rnd()*46;
+    c.fillStyle='rgba(10,26,40,.92)';c.fillRect(x,base-bh,bw,bh);
+    c.fillStyle='rgba(120,180,205,.05)';c.fillRect(x,base-bh,bw,1);
+    for(let wy=base-bh+7;wy<base-4;wy+=9){for(let wx=x+4;wx<x+bw-3;wx+=8){if(rnd()>.5){c.fillStyle='rgba(255,206,132,'+(0.12+rnd()*0.24)+')';c.fillRect(wx,wy,2,2.6)}}}
+    x+=bw+3+rnd()*9;
+  }
+  c.restore();
+}
+function road(c){
+  const top=L.y-L.rh/2,bot=L.y+L.rh/2;
+  const halo=c.createLinearGradient(0,top-54,0,bot+64);
+  halo.addColorStop(0,'rgba(34,108,124,0)');halo.addColorStop(.48,'rgba(33,113,128,.22)');halo.addColorStop(1,'rgba(7,18,28,0)');
+  c.fillStyle=halo;c.fillRect(0,top-54,w,L.rh+118);
+  c.fillStyle='#0b1a28';c.fillRect(0,top,w,L.rh);
+  const ag=c.createLinearGradient(0,top,0,bot);ag.addColorStop(0,'rgba(37,62,80,.55)');ag.addColorStop(.5,'rgba(20,38,52,.7)');ag.addColorStop(1,'rgba(9,22,33,.9)');
+  c.fillStyle=ag;c.fillRect(0,top,w,L.rh);
+  c.strokeStyle='rgba(150,200,218,.05)';c.lineWidth=1;
+  for(let y=top+12;y<bot;y+=15){c.beginPath();c.moveTo(0,y);c.lineTo(w,y);c.stroke()}
+  c.fillStyle='rgba(255,197,110,.5)';c.fillRect(0,top-1.5,w,2);c.fillRect(0,bot-.5,w,2);
+  c.strokeStyle='rgba(228,240,244,.26)';c.lineWidth=2.6;c.setLineDash([24,28]);c.beginPath();c.moveTo(0,L.y);c.lineTo(w,L.y);c.stroke();c.setLineDash([]);
+}
+function drawRings(c){
+  const rate=simRate(),wave=(L.r-L.l)/1.25*rate;
+  for(let i=0;i<sim.rings.length;i++){
+    const r=sim.rings[i],rad=(sim.t-r.t0)*wave;
+    if(rad<3||rad>Math.hypot(w,h)*1.35)continue;
+    const a=clamp(1-rad/(Math.hypot(w,h)*1.15),0,1);
+    c.strokeStyle=i%2?'rgba(96,232,220,'+(a*.30)+')':'rgba(132,246,235,'+(a*.20)+')';
+    c.lineWidth=i%2?1.5:1;
+    c.beginPath();c.arc(r.x,L.y,rad,0,Math.PI*2);c.stroke();
+  }
+}
+function drawCar(c,x,y){
+  const bw=72,bh=30;
+  c.save();c.translate(x,y);
+  c.fillStyle='rgba(0,0,0,.38)';c.beginPath();c.ellipse(0,bh*.78,bw*.52,bh*.24,0,0,7);c.fill();
+  const g=c.createLinearGradient(0,-bh/2,0,bh/2);g.addColorStop(0,'#f7fdff');g.addColorStop(.55,'#d8ecf4');g.addColorStop(1,'#8db2c4');
+  roundRect(c,-bw/2,-bh/2,bw,bh,9);c.fillStyle=g;c.fill();
+  c.strokeStyle='rgba(255,255,255,.32)';c.lineWidth=1;c.stroke();
+  c.fillStyle='#143a50';roundRect(c,-bw*.08,-bh*.34,bw*.38,bh*.44,4);c.fill();
+  c.fillStyle='#1d4f6b';roundRect(c,-bw*.5,-bh*.31,bw*.3,bh*.4,4);c.fill();
+  c.fillStyle='rgba(226,104,92,.9)';c.fillRect(-bw/2+6,bh*.05,bw-12,3.4);
+  c.fillStyle='#0a141c';c.beginPath();c.arc(-bw*.27,bh*.42,6.4,0,7);c.arc(bw*.27,bh*.42,6.4,0,7);c.fill();
+  c.fillStyle='#5d8496';c.beginPath();c.arc(-bw*.27,bh*.42,2.3,0,7);c.arc(bw*.27,bh*.42,2.3,0,7);c.fill();
+  const fl=Math.sin(now*.014)>0;
+  c.shadowColor=fl?'#ff5f5f':'#5b8cff';c.shadowBlur=18;c.fillStyle=fl?'#ff7272':'#5b8cff';
+  roundRect(c,-bw*.16,-bh*.68,bw*.32,6,3);c.fill();c.shadowBlur=0;
+  c.restore();
+}
+function drawListener(c,x,y){
+  c.save();
+  for(let i=0;i<2;i++){
+    const p=(now*.0016+i*.5)%1,r=16+p*48;
+    c.strokeStyle='rgba(255,207,140,'+((1-p)*.3)+')';c.lineWidth=1.2;
+    c.beginPath();c.arc(x,y,r,0,7);c.stroke();
+  }
+  c.translate(x,y);
+  c.fillStyle='#0c2233';c.strokeStyle='#ffcf8c';c.lineWidth=2;
+  c.beginPath();c.arc(0,0,15,0,7);c.fill();c.stroke();
+  c.strokeStyle='#ffcf8c';c.lineWidth=2.2;
+  c.beginPath();c.arc(0,0,9,Math.PI*1.08,Math.PI*1.92);c.stroke();
+  c.fillStyle='#ffcf8c';c.fillRect(-11,-3,4,9);c.fillRect(7,-3,4,9);
+  c.restore();
+}
+function chip(c,x,y,label,stroke,fill){
+  c.save();c.font='700 11px "Microsoft YaHei UI",sans-serif';
+  const pw=c.measureText(label).width+20,ph=23;
+  const bx=clamp(x-pw/2,6,w-pw-6),by=y-ph;
+  c.fillStyle='rgba(6,18,29,.9)';c.strokeStyle=stroke;c.lineWidth=1;
+  roundRect(c,bx,by,pw,ph,8);c.fill();c.stroke();
+  c.fillStyle=fill;c.textAlign='left';c.textBaseline='middle';c.fillText(label,bx+10,by+ph/2+.5);
+  c.restore();
+}
+function drawCone(c){
+  const x=sim.srcX,y=L.y,theta=Math.asin(state.v/state.vs),len=Math.hypot(w,h)*1.5;
+  c.save();
+  for(const sg of [-1,1]){
+    c.strokeStyle='rgba(255,126,112,.5)';c.lineWidth=1.5;c.setLineDash([7,6]);
+    c.beginPath();c.moveTo(x,y);c.lineTo(x-Math.cos(theta)*len,y+sg*Math.sin(theta)*len);c.stroke();
+  }
+  c.setLineDash([]);
+  c.restore();
+  const deg=(theta*180/Math.PI).toFixed(0);
+  chip(c,x-14,y-L.rh/2-42,'马赫锥 θ = '+deg+'°','rgba(255,140,124,.5)','#ffb6a6');
+  txt(c,'声源已超音速：前方没有常规声波',x-14,y-L.rh/2-68,'#ffb6a6',10.5,'center');
+}
+
+function draw(){
+  const c=ctx;
+  const bg=c.createLinearGradient(0,0,0,h);
+  bg.addColorStop(0,'#050f1c');bg.addColorStop(.55,'#091c2d');bg.addColorStop(1,'#0b1824');
+  c.fillStyle=bg;c.fillRect(0,0,w,h);
+  c.save();
+  for(const s of stars){c.globalAlpha=s.a*(.6+.4*Math.sin(now*.0012+s.p));c.fillStyle='#cfe9ff';c.beginPath();c.arc(s.x,s.y,s.r,0,7);c.fill()}
+  c.restore();
+  skyline(c);
+  road(c);
+  drawRings(c);
+  drawCar(c,sim.srcX,L.y);
+  const f=heard();
+  drawListener(c,sim.obsX,L.y);
+  if(state.vs>state.v)drawCone(c);
+  // 驶过瞬间的闪光
+  if(sim.passT!==null&&sim.t-sim.passT<.7&&sim.t-sim.passT>0){
+    const p=(sim.t-sim.passT)/.7,r=18+p*54;
+    c.strokeStyle='rgba(255,226,175,'+((1-p)*.7)+')';c.lineWidth=2;
+    c.beginPath();c.arc(sim.obsX,L.y,r,0,7);c.stroke();
+    txt(c,'驶 过 瞬 间',sim.obsX,L.y-L.rh/2-72,'rgba(255,226,175,'+((1-p)*.9)+')',11,'center');
+  }
+  // 频率标签
+  chip(c,sim.obsX,L.y-34,f===null?'冲击波到来':('你听到 '+Math.round(f)+' Hz'),'rgba(255,207,140,.42)',f===null?'#ffb1a2':'#ffe0ae');
+  // 图例
+  c.fillStyle='rgba(95,227,214,.9)';c.beginPath();c.arc(18,h-16,4,0,7);c.fill();
+  txt(c,'声源与波阵面',28,h-16,'#b9d6e2',10.5);
+  c.fillStyle='rgba(255,207,140,.95)';c.beginPath();c.arc(140,h-16,4,0,7);c.fill();
+  txt(c,'你（听者）',150,h-16,'#b9d6e2',10.5);
+  txt(c,'圆圈间隔 = 波长',w-16,h-16,'rgba(160,195,212,.7)',10,'right');
+  // 速度标注
+  if(state.vs>0)txt(c,'声源 '+state.vs+' m/s  →',sim.srcX,L.y+L.rh/2+22,'#8fe5da',10.5,'center');
+  if(state.vo>0)txt(c,'你 ← '+state.vo+' m/s',sim.obsX,L.y+L.rh/2+22,'#ffd6a1',10.5,'center');
+}
+
+/* ---------- 音调轨迹 ---------- */
+function drawTrace(){
+  const c=tctx,W=tw,H=th;
+  c.clearRect(0,0,W,H);c.fillStyle='#081a29';c.fillRect(0,0,W,H);
+  const st=stats();
+  let lo=Math.min(st.rec,state.f0)*.82,hi=Math.max(st.app||state.f0*1.6,state.f0)*1.12;
+  const yF=v=>H-16-(v-lo)/(hi-lo)*(H-30);
+  const xT=t=>W-14-((sim.t-t)/6.2)*(W-28);
+  c.strokeStyle='rgba(150,200,220,.08)';c.lineWidth=1;
+  for(let i=1;i<4;i++){const y=16+(H-32)*i/4;c.beginPath();c.moveTo(12,y);c.lineTo(W-12,y);c.stroke()}
+  c.strokeStyle='rgba(255,213,150,.38)';c.setLineDash([4,5]);
+  c.beginPath();c.moveTo(12,yF(state.f0));c.lineTo(W-12,yF(state.f0));c.stroke();c.setLineDash([]);
+  txt(c,'f₀ '+Math.round(state.f0)+' Hz',W-14,Math.max(12,yF(state.f0)-8),'rgba(255,213,150,.75)',9.5,'right');
+  if(sim.passT!==null){
+    const px=xT(sim.passT);
+    if(px>14){
+      c.strokeStyle='rgba(255,190,150,.35)';c.setLineDash([2,4]);
+      c.beginPath();c.moveTo(px,10);c.lineTo(px,H-12);c.stroke();c.setLineDash([]);
+      txt(c,'驶过',px+4,12,'rgba(255,200,165,.75)',9.5);
+    }
+  }
+  if(sim.trace.filter(p=>p.f!==null).length>1){
+    const pts=sim.trace.filter(p=>p.t>sim.t-6.2);
+    let started=false;
+    c.beginPath();
+    for(const p of pts){
+      if(p.f===null){started=false;continue}
+      const X=xT(p.t),Y=yF(p.f);
+      if(!started){c.moveTo(X,Y);started=true}else c.lineTo(X,Y);
+    }
+    c.strokeStyle='#8ff3e2';c.lineWidth=2;c.lineJoin='round';c.lineCap='round';c.shadowColor='#63e8d7';c.shadowBlur=10;c.stroke();c.shadowBlur=0;
+    let lastP=null;for(const p of pts)if(p.f!==null)lastP=p;
+    if(lastP){
+      c.fillStyle='#fff1cf';c.beginPath();c.arc(xT(lastP.t),yF(lastP.f),3.4,0,7);c.fill();
+      if(state.playing){c.strokeStyle='rgba(255,236,196,.35)';c.lineWidth=1;c.beginPath();c.arc(xT(lastP.t),yF(lastP.f),7,0,7);c.stroke()}
+    }
+  }else{
+    txt(c,'声源还没出发：拖动速度后点“重播驶过”',W/2,H/2,'rgba(155,190,205,.6)',10.5,'center');
+  }
+}
+
+/* ---------- 数值面板 ---------- */
+function syncOutputs(){
+  $('vsOut').textContent=state.vs+' m/s · '+(state.vs/state.v).toFixed(2)+' 马赫';
+  $('voOut').textContent=state.vo+' m/s';
+  $('vOut').textContent=state.v+' m/s';
+  $('f0Out').textContent=state.f0+' Hz';
+  const pct=(el,val,min,max)=>el.style.setProperty('--pct',((val-min)/(max-min)*100)+'%');
+  pct($('vs'),state.vs,0,700);pct($('vo'),state.vo,0,100);pct($('v'),state.v,300,360);pct($('f0'),state.f0,200,1200);
+}
+function refreshPanels(){
+  const st=stats();
+  const app=st.app,rec=st.rec;
+  if(app===null){
+    $('subst').innerHTML=`<span class="warn">声源达到/超过声速（M = ${st.mach.toFixed(2)}），前方不再有常规声波——出现冲击波与马赫锥。</span><br>远离方向仍可计算：${state.f0} × (${state.v} − ${state.vo}) ÷ (${state.v} + ${state.vs}) ≈ <b>${Math.round(rec)} Hz</b>`;
+    $('eqNote').textContent='超音速时谈“前方频率”没有意义：波阵面叠成锥面，能量以冲击波形式集中。下方音调轨迹只在你身后有读数。';
+    $('appFreq').textContent='冲击波';
+    $('lamAhead').textContent='—';
+  }else{
+    $('subst').innerHTML=`靠近：${state.f0} × (${state.v} + ${state.vo}) ÷ (${state.v} − ${state.vs}) ≈ <b>${Math.round(app)} Hz</b><br>远离：${state.f0} × (${state.v} − ${state.vo}) ÷ (${state.v} + ${state.vs}) ≈ <b>${Math.round(rec)} Hz</b>`;
+    $('eqNote').textContent='靠近时波阵面被压密，波长变为 (v − v_s)/f₀；远离时被拉开。鸣笛本身的频率没有变。';
+    $('appFreq').textContent=Math.round(app)+' Hz';
+    $('lamAhead').textContent=(st.lamA*100).toFixed(1)+' cm';
+  }
+  $('recFreq').textContent=Math.round(rec)+' Hz';
+  $('lamBehind').textContent=(st.lamR*100).toFixed(1)+' cm';
+  updateStatus();
+}
+function updateStatus(){
+  const n=Math.sign(sim.obsX-sim.srcX)||1;
+  let s;
+  if(state.vs===0&&state.vo===0)s='声源与观察者都静止：听到的频率正好等于鸣笛频率。';
+  else if(state.vs===0)s=n>0?'声源静止，你正迎向它：每秒撞上更多波阵面，音调升高。':'声源静止，你已从它身边走过：你正在远离，音调降低。';
+  else if(state.vs>state.v)s='超音速！声源已经跑到自己发出的波前面，马赫锥就是冲击波面。';
+  else if(n>0)s='声源在左，正向你驶来：车头前的波阵面被压密，音调升高。';
+  else s='声源已驶过你，正在远去：车尾后的波阵面被拉开，音调降低。';
+  $('status').textContent=s;
+}
+function updateMetrics(){
+  const f=heard();
+  $('nowFreq').textContent=f===null?'冲击波':Math.round(f)+' Hz';
+  const base=state.f0;
+  const diff=f===null?null:(f-base);
+  $('nowFreq').style.color=f===null?'#ffb1a2':(diff>2?'#ffe2ae':diff<-2?'#a9c6ff':'#d7fcf5');
+}
+
+/* ---------- 模拟推进 ---------- */
+function step(dt){
+  if(!state.playing)return;
+  layout();
+  const rate=simRate(),wave=(L.r-L.l)/1.25*rate;
+  const srcSpd=state.vs/state.v*wave,obsSpd=state.vo/state.v*wave;
+  sim.t+=dt;sim.srcX+=srcSpd*dt;sim.obsX-=obsSpd*dt;
+  const emit=.06;
+  if(sim.t-sim.lastEmit>emit){
+    const k=Math.min(5,Math.floor((sim.t-sim.lastEmit)/emit));
+    for(let i=1;i<=k;i++){const tt=sim.lastEmit+i*emit;sim.rings.push({x:sim.srcX-srcSpd*(sim.t-tt),t0:tt})}
+    sim.lastEmit+=k*emit;
+  }
+  if(sim.rings.length>120)sim.rings=sim.rings.slice(-120);
+  const n=Math.sign(sim.obsX-sim.srcX)||1;
+  if(sim.side&&n!==sim.side)sim.passT=sim.t;
+  sim.side=n;
+  if(sim.srcX>L.r+46||sim.obsX<L.l-24)initSim(false);
+  const f=heard();
+  if(f!==null&&sim.t>=sim.gapUntil&&(!sim.trace.length||sim.t-sim.trace[sim.trace.length-1].t>.04))sim.trace.push({t:sim.t,f});
+  sim.trace=sim.trace.filter(p=>p.t>sim.t-6.4);
+  if(audioOn&&osc&&actx){
+    if(f===null){gainNode.gain.setTargetAtTime(0,actx.currentTime,.06)}
+    else{osc.frequency.setTargetAtTime(clamp(f,70,1600),actx.currentTime,.04);gainNode.gain.setTargetAtTime(.022,actx.currentTime,.05)}
+  }
+}
+function frame(t){
+  now=t;const dt=Math.min((t-last)/1000,.05)||.016;last=t;
+  step(dt);draw();drawTrace();
+  if(t-uiClock>90){uiClock=t;updateMetrics();updateStatus()}
+  requestAnimationFrame(frame);
+}
+
+/* ---------- 尺寸 ---------- */
+function resize(){
+  dpr=Math.min(devicePixelRatio||1,2);
+  w=scene.clientWidth;h=scene.clientHeight;
+  scene.width=Math.round(w*dpr);scene.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);
+  tw=traceC.clientWidth;th=traceC.clientHeight;
+  traceC.width=Math.round(tw*dpr);traceC.height=Math.round(th*dpr);tctx.setTransform(dpr,0,0,dpr,0,0);
+  makeStars();initSim();draw();drawTrace();
+}
+
+/* ---------- 交互 ---------- */
+const SLIDERS={vs:[0,700],vo:[0,100],v:[300,360],f0:[200,1200]};
+for(const k of Object.keys(SLIDERS)){
+  const el=$(k);
+  el.addEventListener('input',()=>{state[k]=+el.value;syncOutputs();refreshPanels();drawTrace()});
+}
+$('play').addEventListener('click',()=>{state.playing=!state.playing;$('play').textContent=state.playing?'Ⅱ 暂停':'▶ 播放';$('play').setAttribute('aria-label',state.playing?'暂停动画':'播放动画')});
+$('replay').addEventListener('click',()=>{initSim(true);refreshPanels()});
+$('sound').addEventListener('click',async()=>{
+  if(audioBusy)return;
+  if(audioOn){stopSound();return}
+  audioBusy=true;
+  try{
+    if(!actx)actx=new (window.AudioContext||window.webkitAudioContext)();
+    await actx.resume();
+    osc=actx.createOscillator();osc.type='sine';gainNode=actx.createGain();gainNode.gain.value=0;
+    osc.frequency.value=clamp(heard()||state.f0,70,1600);
+    osc.connect(gainNode).connect(actx.destination);osc.start();
+    gainNode.gain.setTargetAtTime(.022,actx.currentTime,.05);
+    audioOn=true;$('sound').textContent='◼ 关闭声音';$('sound').setAttribute('aria-pressed','true');
+  }catch(e){$('sound').textContent='此浏览器不支持声音'}
+  audioBusy=false;
+});
+function stopSound(){
+  if(gainNode&&actx)gainNode.gain.setTargetAtTime(0,actx.currentTime,.03);
+  if(osc){const o=osc;setTimeout(()=>{try{o.stop()}catch(e){}},140);osc=null}
+  audioOn=false;$('sound').textContent='♪ 试听音调';$('sound').setAttribute('aria-pressed','false');
+}
+
+/* ---------- 考点 ---------- */
+const CASES=[
+  {id:'amb',tag:'变式 01 · 靠近',title:'救护车迎面驶来',desc:'鸣笛 800 Hz，车速 30 m/s。',
+   preset:{vs:30,vo:0,v:340,f0:800},
+   question:'声速 340 m/s，救护车以 30 m/s 迎面驶来，鸣笛频率 800 Hz。你听到的频率约为多少？',
+   options:['约 735 Hz','约 877 Hz','800 Hz','约 941 Hz'],answer:1,
+   intro:'先判断谁在动：声源在动，分母要减小，频率升高。',
+   solution:'靠近时“上加下减”：f′ = 800 × 340 ÷ (340 − 30) ≈ 877 Hz。鸣笛本身没有变调，是波阵面被压密、波长变短了。'},
+  {id:'pass',tag:'变式 02 · 远离',title:'驶过之后',desc:'同一辆车，从你身边开走。',
+   preset:{vs:30,vo:0,v:340,f0:800},
+   question:'救护车驶过你之后，以 30 m/s 远离，鸣笛仍是 800 Hz。此时你听到约多少？',
+   options:['约 735 Hz','约 877 Hz','800 Hz','约 706 Hz'],answer:0,
+   intro:'远离和靠近只差一个符号；先看分母该加还是该减。',
+   solution:'远离时分母变 v + v_s：f′ = 800 × 340 ÷ 370 ≈ 735 Hz。与驶来时的 877 Hz 对比，就能解释“驶过瞬间音调掉下来”的现象。'},
+  {id:'obs',tag:'变式 03 · 观察者动',title:'你迎向声源',desc:'声源不动，你以 20 m/s 靠近。',
+   preset:{vs:0,vo:20,v:340,f0:500},
+   question:'静止声源发出 500 Hz 的声音，你以 20 m/s 迎向它。你听到的频率约为多少？',
+   options:['约 471 Hz','500 Hz','约 529 Hz','约 560 Hz'],answer:2,
+   intro:'这次是观察者在动：分子改变，波长本身没有被压缩。',
+   solution:'f′ = 500 × (340 + 20) ÷ 340 ≈ 529 Hz。观察者运动改变的是“每秒撞上多少圈波阵面”，介质中的波长并没有变。'},
+  {id:'both',tag:'变式 04 · 双向',title:'双向接近',desc:'声源 25 m/s，你 15 m/s。',
+   preset:{vs:25,vo:15,v:340,f0:600},
+   question:'声源以 25 m/s 靠近你，你同时以 15 m/s 迎向声源；f₀ = 600 Hz，v = 340 m/s。你听到约多少？',
+   options:['约 632 Hz','约 676 Hz','600 Hz','约 711 Hz'],answer:1,
+   intro:'两个运动都让频率升高，分子加、分母减，不要只算一边。',
+   solution:'f′ = 600 × (340 + 15) ÷ (340 − 25) = 600 × 355 ÷ 315 ≈ 676 Hz。'},
+  {id:'mach',tag:'变式 05 · 冲击波',title:'超音速飞机',desc:'2 马赫，看马赫锥张开多少度。',
+   preset:{vs:680,vo:0,v:340,f0:700},
+   question:'飞机以 2 倍声速飞行，声速 340 m/s。马赫锥的半顶角 θ 约为多少？',
+   options:['60°','45°','30°','无法确定'],answer:2,
+   intro:'马赫锥的半角只由马赫数决定：sin θ = v / v_s = 1 / M。',
+   solution:'sin θ = 340 / 680 = 1/2，所以 θ = 30°。马赫数越大，锥越尖；锥面就是冲击波到达的位置。'}
+];
+const casesEl=$('cases');
+CASES.forEach(c=>{
+  const b=document.createElement('button');b.type='button';b.className='case';b.dataset.case=c.id;
+  b.innerHTML=`<small>${c.tag}</small><strong>${c.title}</strong><span>${c.desc}</span>`;
+  b.addEventListener('click',()=>selectCase(c));
+  casesEl.appendChild(b);
+});
+function selectCase(c){
+  document.querySelectorAll('[data-case]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.case===c.id)));
+  Object.assign(state,c.preset);
+  for(const k of ['vs','vo','v','f0']){$(k).value=state[k]}
+  initSim(true);syncOutputs();refreshPanels();updateMetrics();
+  $('question').textContent=c.question;$('caseTitle').textContent=c.title;
+  $('caseIntro').textContent=c.intro;$('caseSolution').textContent=c.solution;
+  $('choices').className='choices';$('choices').innerHTML=c.options.map((o,i)=>`<button type="button" data-answer="${i}">${o}</button>`).join('');
+  $('feedback').textContent='选出答案，再对照上面的波阵面与数值。';
+}
+$('choices').addEventListener('click',e=>{
+  const b=e.target.closest('button[data-answer]');if(!b)return;
+  const c=CASES.find(x=>x.id===document.querySelector('[data-case][aria-pressed="true"]')?.dataset.case);
+  if(!c)return;
+  const ok=+b.dataset.answer===c.answer;
+  document.querySelectorAll('#choices button').forEach(x=>x.classList.remove('correct','wrong'));
+  b.classList.add(ok?'correct':'wrong');
+  $('feedback').textContent=ok?'判断正确！回到上面的波阵面与数值，再验证一次。':'再想想：先判断是谁在动，再看分子加还是分母减。展开右侧解题思路对照。';
+});
+
+/* ---------- 启动 ---------- */
+if('ResizeObserver'in window){new ResizeObserver(()=>resize()).observe(scene)}
+window.addEventListener('resize',resize);
+syncOutputs();refreshPanels();resize();requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
